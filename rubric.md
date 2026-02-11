@@ -12,7 +12,7 @@ Listed below are various aspects of the assignment. When you turn in your work, 
 
 __ 1 pt: Sound data-visual mapping 
 
-__ 1 pt: Aestetically pleasing 
+__ 1 pt: Aesthetically pleasing 
 
 __ 1 pt: Title
 
@@ -27,7 +27,7 @@ __ 3 pts: Functional highlighting
 
 __ 1 pt: Sound data-visual mapping 
 
-__ 1 pt: Aestetically pleasing 
+__ 1 pt: Aesthetically pleasing 
 
 __ 1 pt: Title
 
