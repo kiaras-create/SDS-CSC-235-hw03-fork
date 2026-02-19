@@ -315,9 +315,9 @@ let myData = [
 
 
 
-let height = 300;
-let width = 600;
-let margin = 50;
+let height = 450;
+let width = 750;
+let margin = 100;
 
 
 let frame = d3.select("#myData")
@@ -344,8 +344,13 @@ let bandScale = d3.scaleBand()
 
 frame.append("g")
      .attr("class", "x-axis")
-     .attr("transform", 'translate(0, ${height - margin}')
+     .attr("transform", `translate(0, ${height - margin})`)
      .call(d3.axisBottom(bandScale));
+
+frame.select(".x-axis")
+     .selectAll("text")
+     .attr("transform", "rotate(-45)")
+     .style("text-anchor", "end");
     
 frame.selectAll("rect")
    .data(arrayData)
