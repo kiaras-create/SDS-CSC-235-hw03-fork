@@ -299,21 +299,21 @@ let myData = [
      "total_millions": "52"
    }
  ]
-  let barData = d3.rollup(
-   myData,
-   v => v.length,
-   d => d.family
- )
 
 
- let arrayData = Array.from(barData, ([family, count]) => ({
-   family,count
- }))
+let barData = d3.rollup(
+  myData,
+  v => v.length,
+  d => d.family
+)
 
 
+let arrayData = Array.from(barData, ([family, count]) => ({
+  family,count
+}))
 
 
-
+// bar chart
 
 let height = 450;
 let width = 750;
@@ -321,47 +321,106 @@ let margin = 100;
 
 
 let frame = d3.select("#myData")
-               .append("svg")
-               .attr("width", width)
-               .attr("height", height);
+              .append("svg")
+              .attr("width", width)
+              .attr("height", height);
 
 
 let linearScale = d3.scaleLinear()
-                       .domain([0, d3.max(arrayData, d => d.count)])
-                       .range([height - margin, margin]);
+                      .domain([0, d3.max(arrayData, d => d.count)])
+                      .range([height - margin, margin]);
 
 
 frame.append("g")
-       .attr("transform", `translate(${margin}, 0)`)
-       .call(d3.axisLeft(linearScale));
+      .attr("transform", `translate(${margin}, 0)`)
+      .call(d3.axisLeft(linearScale));
 
 
 let bandScale = d3.scaleBand()
-                   .domain(arrayData.map(d => d.family))
-                   .range([margin, width-margin])
-                   .paddingInner(0.5);
+                  .domain(arrayData.map(d => d.family))
+                  .range([margin, width-margin])
+                  .paddingInner(0.5);
 
 
 frame.append("g")
-     .attr("class", "x-axis")
-     .attr("transform", `translate(0, ${height - margin})`)
-     .call(d3.axisBottom(bandScale));
+    .attr("class", "x-axis")
+    .attr("transform", `translate(0, ${height - margin})`)
+    .call(d3.axisBottom(bandScale));
 
 frame.select(".x-axis")
-     .selectAll("text")
-     .attr("transform", "rotate(-45)")
-     .style("text-anchor", "end");
-    
+    .selectAll("text")
+    .attr("transform", "rotate(-45)")
+    .style("text-anchor", "end");
+  
 frame.selectAll("rect")
-   .data(arrayData)
-   .join("rect")
-   .attr("x", function(d, i) {
-       return bandScale(d.family);
-   })
-   .attr("y", function(d, i) {
-       return (linearScale(d.count));
-   })
-   .attr("width", bandScale.bandwidth())
-   .attr("height", function(d, i) {
-       return ((height - margin) -linearScale(d.count));
-   } );
+  .data(arrayData)
+  .join("rect")
+  .attr("x", function(d, i) {
+      return bandScale(d.family);
+  })
+  .attr("y", function(d, i) {
+      return (linearScale(d.count));
+  })
+  .attr("width", bandScale.bandwidth())
+  .attr("height", function(d, i) {
+      return ((height - margin) -linearScale(d.count));
+  } );
+
+
+
+// pie chart
+
+const w = 700;
+const h = 700;
+const m = 100;
+const radius = Math.min(w, h) / 2 - m;
+
+const svg = d3.select("#pieChart")
+  .append("svg")
+    .attr("width", w)
+    .attr('height', h)
+  .append("g")
+    .attr("transform", `translate(${w/2}, ${h/2 +20})`);
+
+const color = d3.scaleOrdinal()
+   .domain(arrayData.map(d => d.family))
+   .range(d3.schemeSet3);
+
+
+const pie = d3.pie()
+  .value(d => d.count)
+const data_ready = pie(arrayData);
+
+const arc = d3.arc()
+    .innerRadius(0)
+    .outerRadius(radius);
+
+svg.selectAll('path')
+  .data(data_ready)
+  .join('path')
+  .attr('d', arc)
+  .attr("fill", d => color(d.data.family))
+  .attr("stroke", "black")
+  .attr("stroke-width", "2px")
+  .attr("opacity", 0.7);
+
+const labelArc = d3.arc()
+  .innerRadius(radius * 1.05)
+  .outerRadius(radius * 1.05);
+
+svg.selectAll('text')
+  .data(data_ready)
+  .join('text')
+  .attr('transform', d => `translate(${labelArc.centroid(d)})`)
+  .attr('text-anchor', d => (d.startAngle + d.endAngle) / 2 > Math.PI ? 'end' : 'start')
+  .text(d => d.data.family)
+  .style('font-size', '12px')
+  .style('fill', 'black');
+
+svg.append('text')
+    .attr('x', 0)
+    .attr('y', -h/2 + 30)
+    .attr('text-anchor', 'middle')
+    .style('font-size', '20px')
+    .style('font-weight', 'bold')
+    .text("Distribution of Language Family");
