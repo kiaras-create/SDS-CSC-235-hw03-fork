@@ -395,16 +395,6 @@ const arc = d3.arc()
     .innerRadius(0)
     .outerRadius(radius);
 
-// svg.selectAll('path')
-//   .data(data_ready)
-//   .join('path')
-//   .attr('d', arc)
-//   .attr("fill", d => color(d.data.family))
-//   .attr("stroke", "black")
-//   .attr("stroke-width", "2px")
-//   .attr("opacity", 0.7)
-//   .on('click', handleClick);
-
 const labelArc = d3.arc()
   .innerRadius(radius * 1.05)
   .outerRadius(radius * 1.05);
@@ -489,4 +479,4 @@ svg.append('text')
     .style('font-weight', 'bold')
     .style('font-family', 'serif')
     .style('fill', '#2E8B57')
-    .text("Click on a slice to reveal language family and percentage.");
+    .text("Click on a slice to reveal language family and corresponding proportion.");
