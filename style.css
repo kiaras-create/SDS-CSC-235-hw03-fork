@@ -2,3 +2,12 @@
     stroke: black;
     stroke-width: 1px;
 }
+
+.bar{
+   fill: #F8BBD0;
+   cursor: pointer; 
+}
+
+.bar.selected{
+    fill:#A7C7E7;
+}

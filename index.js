@@ -335,6 +335,14 @@ frame.append("g")
       .attr("transform", `translate(${margin}, 0)`)
       .call(d3.axisLeft(linearScale));
 
+frame.append("text")
+  .attr("class", "y-axis-label")
+  .attr("transform", "rotate(-90)")
+  .attr("x", -height / 2)
+  .attr("y", margin / 3)
+  .attr("text-anchor", "middle")
+  .text("Number of Languages");
+
 
 let bandScale = d3.scaleBand()
                   .domain(arrayData.map(d => d.family))
@@ -351,10 +359,28 @@ frame.select(".x-axis")
     .selectAll("text")
     .attr("transform", "rotate(-45)")
     .style("text-anchor", "end");
+
+
+frame.append("text")
+  .attr("class", "x-axis-label")
+  .attr("x", margin + (width - 2 * margin)/2)
+  .attr("y", height - margin / 4)
+  .attr("text-anchor", "middle")
+  .text("Language Family");
+
+frame.append("text")
+  .attr("x", width / 2)
+  .attr("y", margin / 2)
+  .attr("text-anchor", "middle")
+  .style("font-size", "20px")
+  .style("font-weight", "bold")
+  .text("Distribution of Language Family")
+
   
 frame.selectAll("rect")
   .data(arrayData)
   .join("rect")
+  .attr("class", "bar") 
   .attr("x", function(d, i) {
       return bandScale(d.family);
   })
@@ -364,7 +390,19 @@ frame.selectAll("rect")
   .attr("width", bandScale.bandwidth())
   .attr("height", function(d, i) {
       return ((height - margin) -linearScale(d.count));
-  } );
+  })
+  .attr("fill", "#F8BBD0")
+
+  .on("click", function(event, d){
+  const isSelected = d3.select(this).classed("selected")
+  if (isSelected){
+    d3.select(this).classed("selected", false);
+  } else {
+    frame.selectAll(".bar").classed("selected", false);
+    d3.select(this).classed("selected", true);
+  }
+  });
+
 
 
 
