@@ -10,17 +10,17 @@ Listed below are various aspects of the assignment. When you turn in your work, 
 
 ### Phase 1:
 
-__ 1 pt: Sound data-visual mapping 
+**YES**__ 1 pt: Sound data-visual mapping 
 
-__ 1 pt: Aesthetically pleasing 
+**YES**__ 1 pt: Aesthetically pleasing 
 
-__ 1 pt: Title
+_**YES**_ 1 pt: Title
 
-__ 3 pts: Proper x-axis
+**YES**__ 3 pts: Proper x-axis
 
-__ 3 pts: Proper y-axis
+_**YES**_ 3 pts: Proper y-axis
 
-__ 3 pts: Functional highlighting 
+**YES**__ 3 pts: Functional highlighting 
 
 
 ### Phase 2:

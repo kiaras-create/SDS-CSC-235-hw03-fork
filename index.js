@@ -372,8 +372,10 @@ frame.append("text")
   .attr("x", width / 2)
   .attr("y", margin / 2)
   .attr("text-anchor", "middle")
-  .style("font-size", "20px")
-  .style("font-weight", "bold")
+  .style('font-size', '25px')
+  .style('font-weight', 'bold')
+  .style('font-family', 'serif')
+  .style('fill', '#bd88ce')
   .text("Distribution of Language Family")
 
   
@@ -505,7 +507,7 @@ svg.append('text')
     .style('font-size', '25px')
     .style('font-weight', 'bold')
     .style('font-family', 'serif')
-    .style('fill', '#2E8B57')
+    .style('fill', '#bd88ce')
     .text("Distribution of Language Family");
 
 
@@ -516,5 +518,5 @@ svg.append('text')
     .style('font-size', '18px')
     .style('font-weight', 'bold')
     .style('font-family', 'serif')
-    .style('fill', '#2E8B57')
+    .style('fill', '#bd88ce')
     .text("Click on a slice to reveal language family and corresponding proportion.");
