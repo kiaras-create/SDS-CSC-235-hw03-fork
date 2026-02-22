@@ -395,32 +395,98 @@ const arc = d3.arc()
     .innerRadius(0)
     .outerRadius(radius);
 
-svg.selectAll('path')
-  .data(data_ready)
-  .join('path')
-  .attr('d', arc)
-  .attr("fill", d => color(d.data.family))
-  .attr("stroke", "black")
-  .attr("stroke-width", "2px")
-  .attr("opacity", 0.7);
+// svg.selectAll('path')
+//   .data(data_ready)
+//   .join('path')
+//   .attr('d', arc)
+//   .attr("fill", d => color(d.data.family))
+//   .attr("stroke", "black")
+//   .attr("stroke-width", "2px")
+//   .attr("opacity", 0.7)
+//   .on('click', handleClick);
 
 const labelArc = d3.arc()
   .innerRadius(radius * 1.05)
   .outerRadius(radius * 1.05);
 
-svg.selectAll('text')
+const arcs = svg.selectAll('g.slices')
   .data(data_ready)
-  .join('text')
-  .attr('transform', d => `translate(${labelArc.centroid(d)})`)
-  .attr('text-anchor', d => (d.startAngle + d.endAngle) / 2 > Math.PI ? 'end' : 'start')
-  .text(d => d.data.family)
-  .style('font-size', '12px')
-  .style('fill', 'black');
+  .join("g")
+  .classed('slices', true);
+
+arcs.append('path')
+  .attr('d', arc)
+  .attr('fill', d => color(d.data.family))
+  .attr('stroke', 'black')
+  .attr('stroke-width', '2px')
+  .attr('opacity', 0.9)
+  .on('click', handleClick);
+
+arcs.append('text')
+  .attr('class', 'label')
+  .attr('text-anchor', 'middle')
+  .attr('dy', '0.35em')
+  .style('font-size', '18px')
+  .style('fill', 'black')
+  .style('opacity', 0);
+
+
+function handleClick(event, d) {
+  console.log("Clicked slice data:", d)
+  const currentEle = d3.select(this.parentNode);
+  const isClicked = currentEle.classed('clicked');
+
+  d3.selectAll('g.slices')
+    .transition()
+    .attr('transform', 'translate(0,0)');
+
+  d3.selectAll('text.label')
+    .transition()
+    .style('opacity', 0);
+  
+  d3.selectAll('.clicked')
+    .classed('clicked', false);
+  
+  if (!isClicked) {
+    currentEle.classed('clicked', true);
+
+    currentEle.raise();
+ 
+    const centroid = arc.centroid(d);
+    const x = centroid[0] * 1.2;
+    const y = centroid[1] * 1.2;
+
+    currentEle.transition()
+      .attr('transform', `translate(${x}, ${y})`);
+
+    const count = d.data.count;
+    const total = d3.sum(data_ready, d => d.data.count);
+    const percent = ((count/total) * 100).toFixed(1);
+    currentEle.select('text.label')
+      .text(`${d.data.family}: ${percent}%`)
+      .transition()
+      .style('opacity', 1);
+  }
+
+}
 
 svg.append('text')
     .attr('x', 0)
     .attr('y', -h/2 + 30)
     .attr('text-anchor', 'middle')
-    .style('font-size', '20px')
+    .style('font-size', '25px')
     .style('font-weight', 'bold')
+    .style('font-family', 'serif')
+    .style('fill', '#2E8B57')
     .text("Distribution of Language Family");
+
+
+svg.append('text')
+    .attr('x', 0)
+    .attr('y', -h/2 + 55)
+    .attr('text-anchor', 'middle')
+    .style('font-size', '18px')
+    .style('font-weight', 'bold')
+    .style('font-family', 'serif')
+    .style('fill', '#2E8B57')
+    .text("Click on a slice to reveal language family and percentage.");
