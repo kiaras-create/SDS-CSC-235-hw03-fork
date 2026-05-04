@@ -341,7 +341,7 @@ frame.append("text")
   .attr("x", -height / 2)
   .attr("y", margin / 3)
   .attr("text-anchor", "middle")
-  .text("Number of Languages");
+  .text("Number of Languages per Language Family");
 
 
 let bandScale = d3.scaleBand()
