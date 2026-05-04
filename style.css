@@ -11,3 +11,11 @@
 .bar.selected{
     fill:#A7C7E7;
 }
+
+/* change: charts are now aligned in the middle */
+#pieChart,
+#myData {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
